@@ -1,0 +1,10 @@
+# Default ignored files
+src/resources/*.properties
+target/
+logs/
+.idea/
+socialnetwork.iml
+.DS_Store/
+/shelf/
+/workspace.xml
+
