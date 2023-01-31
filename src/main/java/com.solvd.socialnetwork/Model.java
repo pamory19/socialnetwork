@@ -1,13 +1,13 @@
 package com.solvd.socialnetwork;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 abstract public class Model
 {
     private int id;
-    private Timestamp creationDate;
+    private Date creationDate;
 
-    public Model(int id, Timestamp creationDate) {
+    public Model(int id, Date creationDate) {
         this.id = id;
         this.creationDate = creationDate;
     }
@@ -28,11 +28,11 @@ abstract public class Model
         this.id = id;
     }
 
-    public Timestamp getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 }

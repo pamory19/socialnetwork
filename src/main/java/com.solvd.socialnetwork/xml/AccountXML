@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Accounts xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation='AccountXSD.xsd'>
+    <Account id="1">
+        <password>job284</password>
+        <username>emma.mox</username>
+        <user_id>001</user_id>
+    </Account>
+    <Account id="2">
+        <password>ray495</password>
+        <username>john_brown</username>
+        <user_id>002</user_id>
+    </Account>
+</Accounts>

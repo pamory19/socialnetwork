@@ -1,8 +1,8 @@
 package com.solvd.socialnetwork.services;
 
-import com.solvd.socialnetwork.Dao.IShareDao;
-import com.solvd.socialnetwork.share.Share;
-import com.solvd.socialnetwork.share.ShareDao;
+import com.solvd.socialnetwork.dao.IShareDao;
+import com.solvd.socialnetwork.Share;
+import com.solvd.socialnetwork.dao.mysql.ShareDao;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

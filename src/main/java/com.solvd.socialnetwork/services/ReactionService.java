@@ -1,8 +1,8 @@
 package com.solvd.socialnetwork.services;
 
-import com.solvd.socialnetwork.Dao.IReactionDao;
-import com.solvd.socialnetwork.reaction.Reaction;
-import com.solvd.socialnetwork.reaction.ReactionDao;
+import com.solvd.socialnetwork.dao.IReactionDao;
+import com.solvd.socialnetwork.Reaction;
+import com.solvd.socialnetwork.dao.mysql.ReactionDao;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

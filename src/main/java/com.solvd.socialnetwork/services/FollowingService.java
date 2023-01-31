@@ -1,8 +1,8 @@
 package com.solvd.socialnetwork.services;
 
-import com.solvd.socialnetwork.Dao.IFollowingDao;
-import com.solvd.socialnetwork.following.Following;
-import com.solvd.socialnetwork.following.FollowingDao;
+import com.solvd.socialnetwork.dao.IFollowingDao;
+import com.solvd.socialnetwork.Following;
+import com.solvd.socialnetwork.dao.mysql.FollowingDao;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

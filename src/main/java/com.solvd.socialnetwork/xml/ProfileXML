@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Profiles>
+    <Profile>
+        <id>1</id>
+        <bio>Hi! My name is Emma and I enjoy hiking and dogs.</bio>
+        <image>placeholder</image>
+        <accountId>1</accountId>
+        <Views>
+            <View>
+                <id>1</id>
+                <accountId>1</accountId>
+                <viewCount>4</viewCount>
+                <postId>1</postId>
+                <profileId>1</profileId>
+            </View>
+            <View>
+                <id>2</id>
+                <accountId>2</accountId>
+                <viewCount>20</viewCount>
+                <postId>1</postId>
+                <profileId>2</profileId>
+            </View>
+        </Views>
+    </Profile>
+</Profiles>

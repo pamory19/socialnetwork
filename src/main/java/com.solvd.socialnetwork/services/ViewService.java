@@ -1,8 +1,8 @@
 package com.solvd.socialnetwork.services;
 
-import com.solvd.socialnetwork.Dao.IViewDao;
-import com.solvd.socialnetwork.view.View;
-import com.solvd.socialnetwork.view.ViewDao;
+import com.solvd.socialnetwork.dao.IViewDao;
+import com.solvd.socialnetwork.View;
+import com.solvd.socialnetwork.dao.mysql.ViewDao;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

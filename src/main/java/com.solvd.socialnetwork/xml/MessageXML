@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Messages>
+    <Message>
+        <id>1</id>
+        <text>Congrats on graduating</text>
+        <dateSent>2023-01-10 10:15:12</dateSent>
+        <senderId>1</senderId>
+        <recipientId>2</recipientId>
+        <accountId>1</accountId>
+    </Message>
+</Messages>

@@ -7,10 +7,10 @@
         <RollingFile name="file"
                      fileName="${filename}/logdemo.Log"
                      filePattern="${filename}/Logdemo-%d{HH:mm:ss.SSS}.Log">
-                    <PatternLayout>
-                        <pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
-                    </PatternLayout>
-                    <SizeBasedTriggeringPolicy size="2 KB"/>
+            <PatternLayout>
+                <pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <SizeBasedTriggeringPolicy size="2 KB"/>
         </RollingFile>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Shares xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation='ShareXSD.xsd'>
+    <Share id="3">
+        <shareCount>30</shareCount>
+        <accountId>2</accountId>
+        <postId>2</postId>
+    </Share>
+</Shares>

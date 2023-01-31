@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Followings>
+    <Following id="1">
+        <followerId>1</followerId>
+        <followingId>1</followingId>
+        <accountId>2</accountId>
+    </Following>
+    <Following id="2">
+        <followerId>1</followerId>
+        <followingId>3</followingId>
+        <accountId>1</accountId>
+    </Following>
+</Followings>

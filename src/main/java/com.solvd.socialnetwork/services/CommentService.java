@@ -1,8 +1,8 @@
 package com.solvd.socialnetwork.services;
 
-import com.solvd.socialnetwork.Dao.ICommentDao;
-import com.solvd.socialnetwork.comment.Comment;
-import com.solvd.socialnetwork.comment.CommentDao;
+import com.solvd.socialnetwork.dao.ICommentDao;
+import com.solvd.socialnetwork.Comment;
+import com.solvd.socialnetwork.dao.mysql.CommentDao;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

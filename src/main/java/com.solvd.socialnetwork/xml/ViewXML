@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Views xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation='ViewXSD.xsd'>
+   <View id="1">
+        <viewCount>12</viewCount>
+        <accountId>2</accountId>
+        <postId>2</postId>
+        <profileId>1</profileId>
+    </View>
+</Views>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Reactions>
+    <Reaction>
+        <id>1</id>
+        <reactionType>Like</reactionType>
+        <accountId>1</accountId>
+        <postId>1</postId>
+        <profileId>1<profileId>
+    </Reaction>
+</Reactions>

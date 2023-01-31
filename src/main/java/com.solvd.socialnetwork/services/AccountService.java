@@ -1,13 +1,13 @@
 package com.solvd.socialnetwork.services;
 
-import com.solvd.socialnetwork.Dao.IAccountDao;
-import com.solvd.socialnetwork.Dao.IProfileDao;
-import com.solvd.socialnetwork.Dao.IUserDao;
-import com.solvd.socialnetwork.account.Account;
-import com.solvd.socialnetwork.account.AccountDao;
-import com.solvd.socialnetwork.profile.Profile;
-import com.solvd.socialnetwork.profile.ProfileDao;
-import com.solvd.socialnetwork.user.UserDao;
+import com.solvd.socialnetwork.dao.IAccountDao;
+import com.solvd.socialnetwork.dao.IProfileDao;
+import com.solvd.socialnetwork.dao.IUserDao;
+import com.solvd.socialnetwork.Account;
+import com.solvd.socialnetwork.dao.mysql.AccountDao;
+import com.solvd.socialnetwork.Profile;
+import com.solvd.socialnetwork.dao.mysql.ProfileDao;
+import com.solvd.socialnetwork.dao.mysql.UserDao;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -30,7 +30,6 @@ public class AccountService {
             return null;
         }
         Account account = accountDao.getEntityById(id);
-        account.setUser(userDao.getUserById(id));
         return account;
     }
 

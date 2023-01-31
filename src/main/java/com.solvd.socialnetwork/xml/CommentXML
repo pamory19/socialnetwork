@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Comments xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation='CommentXSD.xsd'>
+    <Comment id="1">
+        <text>You look great!</text>
+        <accountId>1</accountId>
+        <postId>1</postId>
+        <creationDate>2023-01-12 10:15:12</creationDate>
+    </Comment>
+    <Comment id="2">
+        <text>Happy birthday!</text>
+        <accountId>2</accountId>
+        <postId>2</postId>
+        <creationDate>2022-12-22 15:30:15</creationDate>
+    </Comment>
+</Comments>

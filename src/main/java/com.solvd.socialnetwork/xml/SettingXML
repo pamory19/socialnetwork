@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+    <Setting>
+        <id>1</id>
+        <privacySettings>Your profile is set to: public</privacySettings>
+        <notificationSettings>Your notifications are set to: receive post notifications</notificationSettings>
+        <accountId>1</accountId>
+    </Setting>
+</Settings>

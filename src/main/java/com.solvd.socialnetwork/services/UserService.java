@@ -1,10 +1,10 @@
 package com.solvd.socialnetwork.services;
 
-import com.solvd.socialnetwork.Dao.IAccountDao;
-import com.solvd.socialnetwork.Dao.IUserDao;
-import com.solvd.socialnetwork.account.AccountDao;
-import com.solvd.socialnetwork.user.User;
-import com.solvd.socialnetwork.user.UserDao;
+import com.solvd.socialnetwork.dao.IAccountDao;
+import com.solvd.socialnetwork.dao.IUserDao;
+import com.solvd.socialnetwork.dao.mysql.AccountDao;
+import com.solvd.socialnetwork.User;
+import com.solvd.socialnetwork.dao.mysql.UserDao;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

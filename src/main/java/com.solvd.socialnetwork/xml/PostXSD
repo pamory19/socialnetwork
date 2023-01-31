@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="Posts">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Post" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="caption" type="xs:string"/>
+                            <xs:element name="accountId" type="xs:int"/>
+                            <xs:element name="creationDate" type="xs:date"/>
+                            <xs:element name="Shares">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Share" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="shareCount" type="xs:int"/>
+                                                    <xs:element name="accountId" type="xs:int"/>
+                                                    <xs:element name="postId" type="xs:int"/>
+                                                </xs:sequence>
+                                                <xs:attribute name="id" type="xs:string" use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Comments">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Comment" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="text" type="xs:string"/>
+                                                    <xs:element name="accountId" type="xs:int"/>
+                                                    <xs:element name="postId" type="xs:int"/>
+                                                    <xs:element name="creationDate" type="xs:date"/>
+                                                </xs:sequence>
+                                                <xs:attribute name="id" type="xs:string" use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Views">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="View" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="viewCount" type="xs:int"/>
+                                                    <xs:element name="accountId" type="xs:int"/>
+                                                    <xs:element name="postId" type="xs:int"/>
+                                                    <xs:element name="profileId" type="xs:int"/>
+                                                </xs:sequence>
+                                                <xs:attribute name="id" type="xs:string" use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Reactions">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Reaction" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="reactionType" type="xs:string"/>
+                                                    <xs:element name="accountId" type="xs:int"/>
+                                                    <xs:element name="postId" type="xs:int"/>
+                                                    <xs:element name="profileId" type="xs:int"/>
+                                                </xs:sequence>
+                                                <xs:attribute name="id" type="xs:string" use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+   </xs:element>
+</xs:schema>
+
+
+

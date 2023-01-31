@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Posts xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation='PostXSD.xsd'>
+    <Post id="1">
+        <caption>Just chilling</caption>
+        <accountId>2</accountId>
+        <creationDate>2023-01-05T13:00:34</creationDate>
+        <Shares>
+            <Share id="1">
+                <shareCount>4</shareCount>
+                <accountId>2</accountId>
+                <postId>1</postId>
+            </Share>
+            <Share id="2">
+                <shareCount>13</shareCount>
+                <accountId>1</accountId>
+                <postId>1</postId>
+            </Share>
+        </Shares>
+        <Comments>
+            <Comment id="1">
+                <accountId>1</accountId>
+                <postId>1</postId>
+                <text>You look great!</text>
+                <creationDate>2023-01-12</creationDate>
+            </Comment>
+        </Comments>
+        <Views>
+            <View id="1">
+                <accountId>1</accountId>
+                <viewCount>10</viewCount>
+                <postId>1</postId>
+                <profileId>1</profileId>
+            </View>
+        </Views>
+        <Reactions>
+            <Reaction id="1">
+                <accountId>1</accountId>
+                <reactionType>Like</reactionType>
+                <postId>1</postId>
+                <profileId>1</profileId>
+            </Reaction>
+        </Reactions>
+    </Post>
+</Posts>

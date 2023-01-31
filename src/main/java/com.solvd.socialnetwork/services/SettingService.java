@@ -1,8 +1,8 @@
 package com.solvd.socialnetwork.services;
 
-import com.solvd.socialnetwork.Dao.ISettingDao;
-import com.solvd.socialnetwork.setting.Setting;
-import com.solvd.socialnetwork.setting.SettingDao;
+import com.solvd.socialnetwork.dao.ISettingDao;
+import com.solvd.socialnetwork.Setting;
+import com.solvd.socialnetwork.dao.mysql.SettingDao;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
