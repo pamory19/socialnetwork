@@ -3,6 +3,8 @@ package com.solvd.socialnetwork.services;
 import com.solvd.socialnetwork.dao.IViewDao;
 import com.solvd.socialnetwork.View;
 import com.solvd.socialnetwork.dao.mysql.ViewDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -12,33 +14,32 @@ import java.util.Optional;
 
 public class ViewService {
     private IViewDao viewDao = new ViewDao();
+    private static final Logger logger = LogManager.getLogger(ViewService.class);
 
     public ViewService(IViewDao viewDao) {
         this.viewDao = viewDao;
     }
 
-    public void createView(View view) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<Integer> postId = Optional.ofNullable(view.getPostId());
-        Optional<Integer> accountId = Optional.ofNullable(view.getAccountId());
-        if (postId.isPresent() && accountId.isPresent()){
-            viewDao.createView(view);
+    public void createView(View view) {
+        if (view.getPostId() == null && view.getAccountId() == null){
+            logger.info("Post and account ID are required.");
         }
         else{
-            throw new IllegalArgumentException("Post and account ID are required.");
+            viewDao.createEntity(view);
         }
     }
 
-    public void updateView(View view) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<Integer> viewId = Optional.ofNullable(view.getId());
+    public void updateView(View view) {
+        Optional<Long> viewId = Optional.ofNullable(view.getId());
         if (viewId.isPresent()){
-            viewDao.updateView(view);
+            viewDao.updateEntity(view);
         }
         else{
-            throw new IllegalArgumentException("View ID is required.");
+            logger.info("View ID is required.");
         }
     }
 
-    public View getViewById(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public View getViewById(Long id) {
         if (viewDao == null){
             return null;
         }
@@ -47,15 +48,15 @@ public class ViewService {
         return view;
     }
 
-    public View getViewByAccountId(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public View getViewByAccountId(Long id) {
         return viewDao.getViewByAccountId(id);
     }
 
-    public List<View> getAllViews() throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public List<View> getAllViews() {
         return viewDao.getAllViews();
     }
 
-    public void deleteView(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        viewDao.deleteView(id);
+    public void deleteView(Long id) {
+        viewDao.deleteEntity(id);
     }
 }

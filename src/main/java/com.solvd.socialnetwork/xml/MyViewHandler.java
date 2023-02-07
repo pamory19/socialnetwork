@@ -12,10 +12,10 @@ public class MyViewHandler extends DefaultHandler {
 
     private List<View> viewsList = new ArrayList<>();
     private StringBuilder characters;
-    boolean viewCount;
-    boolean accountId;
-    boolean postId;
-    boolean profileId;
+    private boolean viewCount;
+    private boolean accountId;
+    private boolean postId;
+    private boolean profileId;
 
     public List<View> getViewsList() {
         return viewsList;
@@ -26,7 +26,7 @@ public class MyViewHandler extends DefaultHandler {
         switch (qName.toLowerCase()){
             case "view":
                 View view = new View();
-                view.setId(Integer.parseInt(a.getValue("id")));
+                view.setId(Long.parseLong(a.getValue("id")));
                 viewsList.add(view);
                 break;
 
@@ -57,28 +57,28 @@ public class MyViewHandler extends DefaultHandler {
         switch (qName.toLowerCase()){
             case "viewcount":
                 viewCount = false;
-                int count = Integer.parseInt(characters.toString().trim());
+                Long count = Long.parseLong(characters.toString().trim());
                 View currentView = viewsList.get(viewsList.size() - 1);
                 currentView.setViewCount(count);
                 break;
 
             case "accountid":
                 accountId = false;
-                int account = Integer.parseInt(characters.toString().trim());
+                Long account = Long.parseLong(characters.toString().trim());
                 currentView = viewsList.get(viewsList.size() - 1);
                 currentView.setAccountId(account);
                 break;
 
             case "postid":
                 postId = false;
-                int post = Integer.parseInt(characters.toString().trim());
+                Long post = Long.parseLong(characters.toString().trim());
                 currentView = viewsList.get(viewsList.size() - 1);
                 currentView.setPostId(post);
                 break;
 
             case "profileid":
                 profileId = false;
-                int profile = Integer.parseInt(characters.toString().trim());
+                Long profile = Long.parseLong(characters.toString().trim());
                 currentView = viewsList.get(viewsList.size() - 1);
                 currentView.setProfileId(profile);
                 break;

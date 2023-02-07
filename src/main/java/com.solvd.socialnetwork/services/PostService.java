@@ -3,6 +3,8 @@ package com.solvd.socialnetwork.services;
 import com.solvd.socialnetwork.dao.IPostDao;
 import com.solvd.socialnetwork.Post;
 import com.solvd.socialnetwork.dao.mysql.PostDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -12,19 +14,20 @@ import java.util.Optional;
 
 public class PostService {
     private IPostDao postDao = new PostDao();
+    private static final Logger logger = LogManager.getLogger(PostService.class);
 
     public PostService(IPostDao postDao) {
         this.postDao = postDao;
     }
 
-    public void createPost(Post post) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public void createPost(Post post) {
         if (post.getCaption() == null || post.getCreationDate() == null){
-            throw new IllegalArgumentException("Caption and creation date are required.");
+            logger.info("Caption and creation date are required.");
         }
-        postDao.createPost(post);
+        postDao.createEntity(post);
     }
 
-    public Post getPostById(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Post getPostById(Long id) {
         if (postDao == null){
             return null;
         }
@@ -33,25 +36,25 @@ public class PostService {
         return post;
     }
 
-    public Post getPostByAccountId(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Post getPostByAccountId(Long id) {
         return postDao.getPostByAccountId(id);
     }
 
-    public void updatePost(Post post) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<Integer> postId = Optional.ofNullable(post.getId());
+    public void updatePost(Post post) {
+        Optional<Long> postId = Optional.ofNullable(post.getId());
         if (postId.isPresent()){
-            postDao.updatePost(post);
+            postDao.updateEntity(post);
         }
         else{
-            throw new IllegalArgumentException("Post ID is required.");
+            logger.info("Post ID is required.");
         }
     }
 
-    public void deletePost(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        postDao.deletePost(id);
+    public void deletePost(Long id) {
+        postDao.deleteEntity(id);
     }
 
-    public List<Post> getAllPosts() throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public List<Post> getAllPosts() {
         return postDao.getAllPosts();
     }
 }

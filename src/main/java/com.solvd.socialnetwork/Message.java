@@ -1,13 +1,10 @@
 package com.solvd.socialnetwork;
 
-import com.solvd.socialnetwork.Model;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Date;
-import java.sql.Timestamp;
 
 @XmlRootElement(name="Messages")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -17,13 +14,13 @@ public class Message extends Model {
     @XmlElement(name="dateSent")
     private Date dateSent;
     @XmlElement(name="senderId")
-    private int senderId;
+    private Long senderId;
     @XmlElement(name="recipientId")
-    private int recipientId;
+    private Long recipientId;
     @XmlElement(name="accountId")
-    private int accountId;
+    private Long accountId;
 
-    public Message(int id, String text, Date dateSent, int senderId, int recipientId, int accountId) {
+    public Message(Long id, String text, Date dateSent, Long senderId, Long recipientId, Long accountId) {
         super(id);
         this.text = text;
         this.dateSent = dateSent;
@@ -52,27 +49,27 @@ public class Message extends Model {
         return dateSent;
     }
 
-    public int getSenderId() {
+    public Long getSenderId() {
         return senderId;
     }
 
-    public void setSenderId(int senderId) {
+    public void setSenderId(Long senderId) {
         this.senderId = senderId;
     }
 
-    public int getRecipientId() {
+    public Long getRecipientId() {
         return recipientId;
     }
 
-    public void setRecipientId(int recipientId) {
+    public void setRecipientId(Long recipientId) {
         this.recipientId = recipientId;
     }
 
-    public int getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 }

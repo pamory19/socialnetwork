@@ -1,0 +1,32 @@
+{
+  "Users": [
+    {
+      "id": 1,
+      "firstName": "Roe",
+      "lastName": "Doug",
+      "age": 30,
+      "email": "roedoug@gmail.com",
+      "phoneNumber": "432-546-1290",
+      "account": {
+        "id": 1,
+        "password": "roe204",
+        "username": "roe_doug",
+        "user_id": 123421
+      }
+    },
+    {
+      "id": 2,
+      "firstName": "Dan",
+      "lastName": "Wilson",
+      "age": 25,
+      "email": "danwilson@gmail.com",
+      "phoneNumber": "408-213-4565",
+      "account": {
+        "id": 2,
+        "password": "dan547",
+        "username": "dan_wilson",
+        "user_id": 342569
+      }
+    }
+  ]
+}

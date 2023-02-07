@@ -33,7 +33,7 @@ public class XMLParserSAX {
         try {
             SAXParser saxParser = saxParserFactory.newSAXParser();
             MyViewHandler handler = new MyViewHandler();
-            saxParser.parse(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/ViewXML"), handler);
+            saxParser.parse(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/ViewXML.xml"), handler);
             List<View> viewsList = handler.getViewsList();
             for (View view : viewsList){
                 logger.info("View Count: " + view.getViewCount());
@@ -52,7 +52,7 @@ public class XMLParserSAX {
         try {
             SAXParser saxParser = saxParserFactory.newSAXParser();
             MyAccountHandler handler1 = new MyAccountHandler();
-            saxParser.parse(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/AccountXML"), handler1);
+            saxParser.parse(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/AccountXML.xml"), handler1);
             List<Account> accountsList = handler1.getAccountsList();
             for (Account account : accountsList){
                 logger.info("Password: " + account.getPassword());
@@ -70,7 +70,7 @@ public class XMLParserSAX {
         try {
             SAXParser saxParser = saxParserFactory.newSAXParser();
             MyPostHandler handler2 = new MyPostHandler();
-            saxParser.parse(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/PostXML"), handler2);
+            saxParser.parse(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/PostXML.xml"), handler2);
             List<Post> postsList = handler2.getPosts();
             for (Post post : postsList){
                 logger.info("Caption: " + post.getCaption());
@@ -91,7 +91,7 @@ public class XMLParserSAX {
         try {
             SAXParser saxParser = saxParserFactory.newSAXParser();
             MyShareHandler handler3 = new MyShareHandler();
-            saxParser.parse(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/ShareXML"), handler3);
+            saxParser.parse(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/ShareXML.xml"), handler3);
             List<Share> sharesList = handler3.getShares();
             for (Share share : sharesList){
                 logger.info("Share Count: " + share.getShareCount());
@@ -109,7 +109,7 @@ public class XMLParserSAX {
         try {
             SAXParser saxParser = saxParserFactory.newSAXParser();
             MyUserHandler handler4 = new MyUserHandler();
-            saxParser.parse(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/UserXML"), handler4);
+            saxParser.parse(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/UserXML.xml"), handler4);
             List<User> usersList = handler4.getUsersList();
             for (User user : usersList){
                 logger.info("Firstname: " + user.getFirstName());
@@ -132,7 +132,7 @@ public class XMLParserSAX {
         // create a schema object from XSD file
         Schema schema;
         try {
-            schema = factory.newSchema(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/ViewXSD"));
+            schema = factory.newSchema(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/ViewXSD.xsd"));
         } catch (SAXException e) {
             throw new RuntimeException(e);
         }
@@ -141,7 +141,7 @@ public class XMLParserSAX {
         Validator validator = schema.newValidator();
 
         // create a source object that represents the XML file you want to validate
-        Source source = new StreamSource(new File(("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/ViewXML")));
+        Source source = new StreamSource(new File(("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/ViewXML.xml")));
 
         // use the validator's validate() method to perform validation
         try {
@@ -156,7 +156,7 @@ public class XMLParserSAX {
 
         Schema schema1;
         try {
-            schema1 = factory1.newSchema(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/AccountXSD"));
+            schema1 = factory1.newSchema(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/AccountXSD.xsd"));
         } catch (SAXException e) {
             throw new RuntimeException(e);
         }
@@ -165,7 +165,7 @@ public class XMLParserSAX {
         Validator validator1 = schema1.newValidator();
 
         // create a source object that represents the XML file you want to validate
-        Source source1 = new StreamSource(new File(("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/AccountXML")));
+        Source source1 = new StreamSource(new File(("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/AccountXML.xml")));
 
         // use the validator's validate() method to perform validation
         try {

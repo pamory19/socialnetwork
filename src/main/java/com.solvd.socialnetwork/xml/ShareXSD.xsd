@@ -6,9 +6,9 @@
                 <xs:element name="Share" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="shareCount" type="xs:int"/>
-                            <xs:element name="accountId" type="xs:int"/>
-                            <xs:element name="postId" type="xs:int"/>
+                            <xs:element name="shareCount" type="xs:Long"/>
+                            <xs:element name="accountId" type="xs:Long"/>
+                            <xs:element name="postId" type="xs:Long"/>
                         </xs:sequence>
                         <xs:attribute name="id" type="xs:string" use="required"/>
                     </xs:complexType>

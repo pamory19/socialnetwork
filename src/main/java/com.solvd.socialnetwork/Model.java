@@ -4,10 +4,10 @@ import java.sql.Date;
 
 abstract public class Model
 {
-    private int id;
+    private Long id;
     private Date creationDate;
 
-    public Model(int id, Date creationDate) {
+    public Model(Long id, Date creationDate) {
         this.id = id;
         this.creationDate = creationDate;
     }
@@ -16,15 +16,15 @@ abstract public class Model
 
     }
 
-    public Model(int id) {
+    public Model(Long id) {
         this.id = id;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

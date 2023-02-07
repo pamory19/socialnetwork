@@ -1,14 +1,12 @@
 package com.solvd.socialnetwork;
 
-import com.solvd.socialnetwork.Model;
-
 public class View extends Model {
-    private int viewCount;
-    private int accountId;
-    private int postId;
-    private int profileId;
+    private Long viewCount;
+    private Long accountId;
+    private Long postId;
+    private Long profileId;
 
-    public View(int id, int viewCount, int accountId, int postId, int profileId) {
+    public View(Long id, Long viewCount, Long accountId, Long postId, Long profileId) {
         super(id);
         this.setId(id);
         this.viewCount = viewCount;
@@ -21,35 +19,35 @@ public class View extends Model {
 
     }
 
-    public int getViewCount() {
+    public Long getViewCount() {
         return viewCount;
     }
 
-    public void setViewCount(int viewCount) {
+    public void setViewCount(Long viewCount) {
         this.viewCount = viewCount;
     }
 
-    public int getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 
-    public int getPostId() {
+    public Long getPostId() {
         return postId;
     }
 
-    public void setPostId(int postId) {
+    public void setPostId(Long postId) {
         this.postId = postId;
     }
 
-    public int getProfileId() {
+    public Long getProfileId() {
         return profileId;
     }
 
-    public void setProfileId(int profileId) {
+    public void setProfileId(Long profileId) {
         this.profileId = profileId;
     }
 }

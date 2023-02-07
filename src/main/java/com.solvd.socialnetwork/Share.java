@@ -6,17 +6,22 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @XmlRootElement(name="Shares")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Share extends Model {
+    @JsonProperty("shareCount")
     @XmlElement(name="shareCount")
-    private int shareCount;
+    private Long shareCount;
+    @JsonProperty("accountId")
     @XmlElement(name="accountId")
-    private int accountId;
+    private Long accountId;
+    @JsonProperty("postId")
     @XmlElement(name="postId")
-    private int postId;
+    private Long postId;
 
-    public Share(int id, int shareCount, int accountId, int postId) {
+    public Share(Long id, Long shareCount, Long accountId, Long postId) {
         super(id);
         this.shareCount = shareCount;
         this.accountId = accountId;
@@ -27,27 +32,27 @@ public class Share extends Model {
 
     }
 
-    public int getShareCount() {
+    public Long getShareCount() {
         return shareCount;
     }
 
-    public void setShareCount(int shareCount) {
+    public void setShareCount(Long shareCount) {
         this.shareCount = shareCount;
     }
 
-    public int getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 
-    public int getPostId() {
+    public Long getPostId() {
         return postId;
     }
 
-    public void setPostId(int postId) {
+    public void setPostId(Long postId) {
         this.postId = postId;
     }
 }

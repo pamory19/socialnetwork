@@ -1,16 +1,20 @@
 package com.solvd.socialnetwork;
 
-import com.solvd.socialnetwork.Model;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.sql.Timestamp;
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Reaction extends Model {
+    @JsonProperty("reactionType")
     private String reactionType;
-    private int accountId;
-    private int postId;
-    private int profileId;
+    @JsonProperty("accountId")
+    private Long accountId;
+    @JsonProperty("postId")
+    private Long postId;
+    @JsonProperty("profileId")
+    private Long profileId;
 
-    public Reaction(int id, String reactionType, int accountId, int postId, int profileId) {
+    public Reaction(Long id, String reactionType, Long accountId, Long postId, Long profileId) {
         super(id);
         this.reactionType = reactionType;
         this.accountId = accountId;
@@ -31,27 +35,27 @@ public class Reaction extends Model {
         this.reactionType = reactionType;
     }
 
-    public int getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 
-    public int getPostId() {
+    public Long getPostId() {
         return postId;
     }
 
-    public void setPostId(int postId) {
+    public void setPostId(Long postId) {
         this.postId = postId;
     }
 
-    public int getProfileId() {
+    public Long getProfileId() {
         return profileId;
     }
 
-    public void setProfileId(int profileId) {
+    public void setProfileId(Long profileId) {
         this.profileId = profileId;
     }
 }

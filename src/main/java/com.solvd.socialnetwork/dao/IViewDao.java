@@ -9,11 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IViewDao extends IBaseDao<View> {
-    void createView(View view) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException;
-    View getViewById(int id);
-    void updateView(View view) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException;
-    void deleteView(int id) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException;
-    List<View> getAllViews() throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException;
-    View getViewByProfileId(int id);
-    View getViewByAccountId(int id);
+    List<View> getAllViews();
+    View getViewByProfileId(Long id);
+    View getViewByAccountId(Long id);
 }

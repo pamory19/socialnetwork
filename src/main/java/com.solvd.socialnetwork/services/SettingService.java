@@ -3,6 +3,8 @@ package com.solvd.socialnetwork.services;
 import com.solvd.socialnetwork.dao.ISettingDao;
 import com.solvd.socialnetwork.Setting;
 import com.solvd.socialnetwork.dao.mysql.SettingDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -12,33 +14,32 @@ import java.util.Optional;
 
 public class SettingService {
     private ISettingDao settingDao = new SettingDao();
+    private static final Logger logger = LogManager.getLogger(SettingService.class);
 
     public SettingService(ISettingDao settingDao) {
         this.settingDao = settingDao;
     }
 
-    public void createSetting(Setting setting) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<String> settingNotification = Optional.ofNullable(setting.getNotificationSettings());
-        Optional<String> privacyNotification = Optional.ofNullable(setting.getPrivacySettings());
-        if (settingNotification.isPresent() && privacyNotification.isPresent()){
-            settingDao.createSetting(setting);
+    public void createSetting(Setting setting) {
+        if (setting.getNotificationSettings() == null && setting.getPrivacySettings() == null){
+            logger.info("Setting and Privacy Notifications are required.");
         }
         else{
-            throw new IllegalArgumentException("Setting and Privacy Notifications are required.");
+            settingDao.createEntity(setting);
         }
     }
 
-    public void updateSetting(Setting setting) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<Integer> settingId = Optional.ofNullable(setting.getId());
+    public void updateSetting(Setting setting) {
+        Optional<Long> settingId = Optional.ofNullable(setting.getId());
         if (settingId.isPresent()){
-            settingDao.updateSetting(setting);
+            settingDao.updateEntity(setting);
         }
         else{
-            throw new IllegalArgumentException("Setting ID is required.");
+            logger.info("Setting ID is required.");
         }
     }
 
-    public Setting getSettingById(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Setting getSettingById(Long id) {
         if (settingDao == null){
             return null;
         }
@@ -47,15 +48,15 @@ public class SettingService {
         return setting;
     }
 
-    public Setting getSettingByAccountId(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Setting getSettingByAccountId(Long id) {
         return settingDao.getSettingByAccountId(id);
     }
 
-    public List<Setting> getAllSettings() throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public List<Setting> getAllSettings() {
         return settingDao.getAllSettings();
     }
 
-    public void deleteComment(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        settingDao.deleteSetting(id);
+    public void deleteComment(Long id) {
+        settingDao.deleteEntity(id);
     }
 }

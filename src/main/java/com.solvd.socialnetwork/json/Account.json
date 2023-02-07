@@ -1,0 +1,16 @@
+{
+    "Accounts": [
+        {
+            "id": 1,
+            "password": "roe204",
+            "username": "roe_doug",
+            "user_id": 123421
+        },
+        {
+            "id": 2,
+            "password": "dan547",
+            "username": "dan_wilson",
+            "user_id": 342569
+        }
+    ]
+}

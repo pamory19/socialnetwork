@@ -3,6 +3,8 @@ package com.solvd.socialnetwork.services;
 import com.solvd.socialnetwork.dao.IFollowingDao;
 import com.solvd.socialnetwork.Following;
 import com.solvd.socialnetwork.dao.mysql.FollowingDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -12,22 +14,23 @@ import java.util.Optional;
 
 public class FollowingService {
     private IFollowingDao followingDao = new FollowingDao();
+    private static final Logger logger = LogManager.getLogger(FollowingService.class);
 
     public FollowingService(IFollowingDao followingDao) {
         this.followingDao = followingDao;
     }
 
-    public void createFollowing(Following following) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<Integer> followingId = Optional.ofNullable(following.getAccountId());
+    public void createFollowing(Following following) {
+        Optional<Long> followingId = Optional.ofNullable(following.getAccountId());
         if (followingId.isPresent()){
-            followingDao.createFollowing(following);
+            followingDao.createEntity(following);
         }
         else{
-            throw new IllegalArgumentException("Account ID is required.");
+            logger.info("Account ID is required.");
         }
     }
 
-    public Following getFollowingById(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Following getFollowingById(Long id) {
         if (followingDao == null){
             return null;
         }
@@ -36,25 +39,25 @@ public class FollowingService {
         return following;
     }
 
-    public Following getFollowingByAccountId(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        return followingDao.getFollowingById(id);
+    public Following getFollowingByAccountId(Long id) {
+        return followingDao.getEntityById(id);
     }
 
-    public void updateFollowing(Following following) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<Integer> followingId = Optional.ofNullable(following.getId());
+    public void updateFollowing(Following following) {
+        Optional<Long> followingId = Optional.ofNullable(following.getId());
         if (followingId.isPresent()){
-            followingDao.updateFollowing(following);
+            followingDao.updateEntity(following);
         }
         else{
-            throw new IllegalArgumentException("Following ID is required.");
+            logger.info("Following ID is required.");
         }
     }
 
-    public List<Following> getAllFollowings() throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public List<Following> getAllFollowings() {
         return followingDao.getAllFollowings();
     }
 
-    public void deleteFollowing(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        followingDao.deleteFollowing(id);
+    public void deleteFollowing(Long id) {
+        followingDao.deleteEntity(id);
     }
 }

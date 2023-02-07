@@ -12,9 +12,9 @@ public class MyAccountHandler extends DefaultHandler {
 
     private List<Account> accountList = new ArrayList<>();
     private StringBuilder characters;
-    boolean password;
-    boolean username;
-    boolean user_id;
+    private boolean password;
+    private boolean username;
+    private boolean user_id;
 
     public List<Account> getAccountsList() {
         return accountList;
@@ -25,7 +25,7 @@ public class MyAccountHandler extends DefaultHandler {
         switch (qName.toLowerCase()){
             case "account":
                 Account account = new Account();
-                account.setId(Integer.parseInt(a.getValue("id")));
+                account.setId(Long.parseLong(a.getValue("id")));
                 accountList.add(account);
                 break;
             case "password":
@@ -64,7 +64,7 @@ public class MyAccountHandler extends DefaultHandler {
 
             case "user_id":
                 user_id = false;
-                int uid = Integer.parseInt(characters.toString().trim());
+                Long uid = Long.parseLong(characters.toString().trim());
                 currentAccount = accountList.get(accountList.size() - 1);
                 currentAccount.setUser_id(uid);
                 break;

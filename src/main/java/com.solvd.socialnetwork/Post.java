@@ -5,13 +5,13 @@ import java.util.List;
 
 public class Post extends Model {
     private String caption;
-    private int accountId;
+    private Long accountId;
     private List<Share> shares;
     private List<Comment> comments;
     private List<View> views;
     private List<Reaction> reactions;
 
-    public Post(int id, Date creationDate, String caption, int accountId, List<Share> shares, List<Comment> comments, List<View> views, List<Reaction> reactions) {
+    public Post(Long id, Date creationDate, String caption, Long accountId, List<Share> shares, List<Comment> comments, List<View> views, List<Reaction> reactions) {
         super(id, creationDate);
         this.caption = caption;
         this.setCreationDate(creationDate);
@@ -35,11 +35,11 @@ public class Post extends Model {
         this.caption = caption;
     }
 
-    public int getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 

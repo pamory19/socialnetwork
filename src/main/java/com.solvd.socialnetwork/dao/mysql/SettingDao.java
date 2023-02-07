@@ -3,6 +3,8 @@ package com.solvd.socialnetwork.dao.mysql;
 import com.solvd.socialnetwork.dao.ISettingDao;
 import com.solvd.socialnetwork.connectionpool.ConnectionPoolDesign;
 import com.solvd.socialnetwork.Setting;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -14,120 +16,210 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SettingDao extends MySQLDao<Setting> implements ISettingDao {
+    private static final Logger logger = LogManager.getLogger(SettingDao.class);
 
     @Override
-    public void createSetting(Setting setting) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
+    public Setting createEntity(Setting entity) {
         String sql = "INSERT INTO Setting (privacy_settings, notification_settings, account_id) VALUES (?, ?, ?)";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, setting.getPrivacySettings());
-        statement.setString(2, setting.getNotificationSettings());
-        statement.setInt(3, setting.getAccountId());
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, entity.getPrivacySettings());
+            statement.setString(2, entity.getNotificationSettings());
+            statement.setLong(3, entity.getAccountId());
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
+        return entity;
     }
 
+
     @Override
-    public Setting getSettingById(int id) {
+    public Setting getEntityById(Long id) {
         String sql = "SELECT * FROM Setting WHERE id = ?";
-        PreparedStatement statement;
         Connection connection = null;
         Setting setting = null;
+        ResultSet resultSet = null;
+        PreparedStatement statement = null;
         try {
             connection = ConnectionPoolDesign.getInstance().getConnection();
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
             setting = resultSetToObject(resultSet);
-            resultSet.close();
-            statement.close();
         } catch (SQLException | IllegalAccessException | InstantiationException | InvocationTargetException |
                  IOException | ClassNotFoundException | NoSuchMethodException e){
-            e.printStackTrace();
+            logger.info(e);
         } finally {
             try {
-                ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                if (statement != null) {
+                    statement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
             } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
-                     InstantiationException | NoSuchMethodException | IOException e) {
-                e.printStackTrace();
+                     InstantiationException | NoSuchMethodException | IOException e){
+                logger.info(e);
             }
         }
         return setting;
     }
 
-    public Setting getSettingByAccountId(int id) {
+
+    public Setting getSettingByAccountId(Long id) {
         String sql = "SELECT * FROM Setting WHERE account_id = ?";
-        PreparedStatement statement;
+        PreparedStatement statement = null;
         Connection connection = null;
         Setting setting = null;
+        ResultSet resultSet = null;
         try {
             connection = ConnectionPoolDesign.getInstance().getConnection();
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
             setting = resultSetToObject(resultSet);
-            resultSet.close();
-            statement.close();
         } catch (SQLException | IllegalAccessException | InstantiationException | InvocationTargetException |
                  IOException | ClassNotFoundException | NoSuchMethodException e){
-            e.printStackTrace();
+            logger.info(e);
         } finally {
             try {
-                ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
             } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
                      InstantiationException | NoSuchMethodException | IOException e) {
-                e.printStackTrace();
+                logger.info(e);
             }
         }
         return setting;
     }
 
     @Override
-    public void updateSetting(Setting setting) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
+    public void updateEntity(Setting entity) {
         String sql = "UPDATE Setting SET privacy_settings = ?, notification_settings = ?, account_id = ? WHERE id = ?";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, setting.getPrivacySettings());
-        statement.setString(2, setting.getNotificationSettings());
-        statement.setInt(3, setting.getAccountId());
-        statement.setInt(4, setting.getId());
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
-    }
-
-    @Override
-    public void deleteSetting(int id) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
-        String sql = "DELETE FROM Setting WHERE id = ?";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, id);
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
-    }
-
-    @Override
-    public List<Setting> getAllSettings() throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
-        String sql = "SELECT * FROM Setting";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        ResultSet resultSet = statement.executeQuery();
-        List<Setting> settings = new ArrayList<>();
-        while (resultSet.next()){
-            Setting setting = new Setting();
-            setting.setId(resultSet.getInt("id"));
-            setting.setPrivacySettings(resultSet.getString("privacy_settings"));
-            setting.setNotificationSettings(resultSet.getString("notification_settings"));
-            setting.setAccountId(resultSet.getInt("account_id"));
-            settings.add(setting);
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, entity.getPrivacySettings());
+            statement.setString(2, entity.getNotificationSettings());
+            statement.setLong(3, entity.getAccountId());
+            statement.setLong(4, entity.getId());
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
         }
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
-        return settings;
     }
 
+
     @Override
-    public Setting getEntityById(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        SettingDao settingDao = new SettingDao();
-        return settingDao.getSettingById(id);
+    public void deleteEntity(Long id) {
+        String sql = "DELETE FROM Setting WHERE id = ?";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
+    }
+
+
+    @Override
+    public List<Setting> getAllSettings() {
+        String sql = "SELECT * FROM Setting";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<Setting> settings = new ArrayList<>();
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                Setting setting = new Setting();
+                setting.setId(resultSet.getLong("id"));
+                setting.setPrivacySettings(resultSet.getString("privacy_settings"));
+                setting.setNotificationSettings(resultSet.getString("notification_settings"));
+                setting.setAccountId(resultSet.getLong("account_id"));
+                settings.add(setting);
+            }
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
+        return settings;
     }
 
     @Override
@@ -136,29 +228,14 @@ public class SettingDao extends MySQLDao<Setting> implements ISettingDao {
         try{
             while (resultSet.next()){
                 setting = new Setting();
-                setting.setId(resultSet.getInt("id"));
+                setting.setId(resultSet.getLong("id"));
                 setting.setPrivacySettings(resultSet.getString("privacy_settings"));
                 setting.setNotificationSettings(resultSet.getString("notification_settings"));
-                setting.setAccountId(resultSet.getInt("account_id"));
+                setting.setAccountId(resultSet.getLong("account_id"));
             }
         } catch (SQLException e){
-            e.printStackTrace();
+            logger.info(e);
         }
         return setting;
-    }
-
-    @Override
-    public void updateEntity(Setting entity) {
-
-    }
-
-    @Override
-    public Setting createEntity(Setting entity) {
-        return null;
-    }
-
-    @Override
-    public void removeEntity(int id) {
-
     }
 }

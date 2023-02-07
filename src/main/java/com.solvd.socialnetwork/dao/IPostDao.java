@@ -9,10 +9,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IPostDao extends IBaseDao<Post> {
-    void createPost(Post post) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException;
-    Post getPostById(int id);
-    void updatePost(Post post) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException;
-    void deletePost(int id) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException;
-    List<Post> getAllPosts() throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException;
-    Post getPostByAccountId(int id);
+    List<Post> getAllPosts();
+    Post getPostByAccountId(Long id);
 }

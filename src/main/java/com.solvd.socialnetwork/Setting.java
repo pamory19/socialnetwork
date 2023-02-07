@@ -1,13 +1,18 @@
 package com.solvd.socialnetwork;
 
-import com.solvd.socialnetwork.Model;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Setting extends Model {
+    @JsonProperty("privacySettings")
     private String privacySettings;
+    @JsonProperty("notificationSettings")
     private String notificationSettings;
-    private int accountId;
+    @JsonProperty("accountId")
+    private Long accountId;
 
-    public Setting(int id, String privacySettings, String notificationSettings, int accountId) {
+    public Setting(Long id, String privacySettings, String notificationSettings, Long accountId) {
         super(id);
         this.privacySettings = privacySettings;
         this.notificationSettings = notificationSettings;
@@ -35,11 +40,11 @@ public class Setting extends Model {
         this.notificationSettings = notificationSettings;
     }
 
-    public int getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 }

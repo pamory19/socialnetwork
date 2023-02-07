@@ -3,6 +3,8 @@ package com.solvd.socialnetwork.services;
 import com.solvd.socialnetwork.dao.IMessageDao;
 import com.solvd.socialnetwork.Message;
 import com.solvd.socialnetwork.dao.mysql.MessageDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -12,23 +14,22 @@ import java.util.Optional;
 
 public class MessageService {
     private IMessageDao messageDao = new MessageDao();
+    private static final Logger logger = LogManager.getLogger(MessageService.class);
 
     public MessageService(IMessageDao messageDao) {
         this.messageDao = messageDao;
     }
 
-    public void createMessage(Message message) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<Integer> recipientId = Optional.ofNullable(message.getRecipientId());
-        Optional<Integer> senderId = Optional.ofNullable(message.getSenderId());
-        if (recipientId.isPresent() && senderId.isPresent()){
-            messageDao.createMessage(message);
+    public void createMessage(Message message) {
+        if (message.getRecipientId() != null && message.getSenderId() != null){
+            messageDao.createEntity(message);
         }
         else{
-            throw new IllegalArgumentException("Recipient and sender ID is required.");
+            logger.info("Recipient and sender ID is required.");
         }
     }
 
-    public Message getMessageById(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Message getMessageById(Long id) {
         if (messageDao == null){
             return null;
         }
@@ -37,25 +38,25 @@ public class MessageService {
         return message;
     }
 
-    public Message getMessageByAccountId(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Message getMessageByAccountId(int id) {
         return messageDao.getMessageByAccountId(id);
     }
 
-    public void updateMessage(Message message) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<Integer> messageId = Optional.ofNullable(message.getId());
+    public void updateMessage(Message message) {
+        Optional<Long> messageId = Optional.ofNullable(message.getId());
         if (messageId.isPresent()){
-            messageDao.updateMessage(message);
+            messageDao.updateEntity(message);
         }
         else{
-            throw new IllegalArgumentException("Message ID is required.");
+            logger.info("Message ID is required.");
         }
     }
 
-    public List<Message> getAllMessages() throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public List<Message> getAllMessages() {
         return messageDao.getAllMessages();
     }
 
-    public void deleteMessage(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        messageDao.deleteMessage(id);
+    public void deleteMessage(Long id) {
+        messageDao.deleteEntity(id);
     }
 }

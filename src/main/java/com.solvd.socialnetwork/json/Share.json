@@ -1,0 +1,16 @@
+{
+  "Shares": [
+    {
+      "id": 1,
+      "shareCount": 20,
+      "accountId": 100,
+      "postId": 200
+    },
+    {
+      "id": 2,
+      "shareCount": 25,
+      "accountId": 101,
+      "postId": 201
+    }
+  ]
+}

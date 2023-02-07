@@ -6,10 +6,10 @@ import java.util.List;
 public class Profile extends Model {
     private String bio;
     private Blob image;
-    private int accountId;
+    private Long accountId;
     private List<View> views;
 
-    public Profile(int id, String bio, Blob image, int accountId, List<View> views) {
+    public Profile(Long id, String bio, Blob image, Long accountId, List<View> views) {
         super(id);
         this.bio = bio;
         this.image = image;
@@ -37,11 +37,11 @@ public class Profile extends Model {
         this.image = image;
     }
 
-    public int getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 

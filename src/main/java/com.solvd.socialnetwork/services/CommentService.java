@@ -3,6 +3,8 @@ package com.solvd.socialnetwork.services;
 import com.solvd.socialnetwork.dao.ICommentDao;
 import com.solvd.socialnetwork.Comment;
 import com.solvd.socialnetwork.dao.mysql.CommentDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -12,33 +14,32 @@ import java.util.Optional;
 
 public class CommentService {
     private ICommentDao commentDao = new CommentDao();
+    private static final Logger logger = LogManager.getLogger(CommentService.class);
 
     public CommentService(ICommentDao commentDao) {
         this.commentDao = commentDao;
     }
 
-    public void createComment(Comment comment) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<Integer> postId = Optional.ofNullable(comment.getPostId());
-        Optional<Integer> accountId = Optional.ofNullable(comment.getAccountId());
-        if (postId.isPresent() && accountId.isPresent()){
-            commentDao.createComment(comment);
+    public void createComment(Comment comment) {
+        if (comment.getPostId() != null && comment.getAccountId() != null){
+            commentDao.createEntity(comment);
         }
         else{
-            throw new IllegalArgumentException("Post and account ID is required.");
+            logger.info("Post and account ID is required.");
         }
     }
 
-    public void updateComment(Comment comment) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<Integer> commentId = Optional.ofNullable(comment.getId());
+    public void updateComment(Comment comment) {
+        Optional<Long> commentId = Optional.ofNullable(comment.getId());
         if (commentId.isPresent()){
-            commentDao.updateComment(comment);
+            commentDao.updateEntity(comment);
         }
         else{
-            throw new IllegalArgumentException("Comment ID is required.");
+            logger.info("Comment ID is required.");
         }
     }
 
-    public Comment getCommentById(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Comment getCommentById(Long id) {
         if (commentDao == null){
             return null;
         }
@@ -47,15 +48,15 @@ public class CommentService {
         return comment;
     }
 
-    public Comment getCommentByAccountId(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Comment getCommentByAccountId(Long id) {
         return commentDao.getCommentByAccountId(id);
     }
 
-    public List<Comment> getAllComments() throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public List<Comment> getAllComments() {
         return commentDao.getAllComments();
     }
 
-    public void deleteComment(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        commentDao.deleteComment(id);
+    public void deleteComment(Long id) {
+        commentDao.deleteEntity(id);
     }
 }

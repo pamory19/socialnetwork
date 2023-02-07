@@ -6,10 +6,10 @@
                 <xs:element name="View" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="viewCount" type="xs:int"/>
-                            <xs:element name="accountId" type="xs:int"/>
-                            <xs:element name="postId" type="xs:int"/>
-                            <xs:element name="profileId" type="xs:int"/>
+                            <xs:element name="viewCount" type="xs:Long"/>
+                            <xs:element name="accountId" type="xs:Long"/>
+                            <xs:element name="postId" type="xs:Long"/>
+                            <xs:element name="profileId" type="xs:Long"/>
                         </xs:sequence>
                         <xs:attribute name="id" type="xs:string" use="required"/>
                     </xs:complexType>

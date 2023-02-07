@@ -3,6 +3,8 @@ package com.solvd.socialnetwork.dao.mysql;
 import com.solvd.socialnetwork.dao.IShareDao;
 import com.solvd.socialnetwork.connectionpool.ConnectionPoolDesign;
 import com.solvd.socialnetwork.Share;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -14,66 +16,98 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShareDao extends MySQLDao<Share> implements IShareDao {
+    private static final Logger logger = LogManager.getLogger(ShareDao.class);
 
     @Override
-    public void createShare(Share share) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
+    public Share createEntity(Share entity) {
         String sql = "INSERT INTO Share (shareCount, account_id, post_id) VALUES (?, ?, ?)";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, share.getShareCount());
-        statement.setInt(2, share.getAccountId());
-        statement.setInt(3, share.getPostId());
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setLong(1, entity.getShareCount());
+            statement.setLong(2, entity.getAccountId());
+            statement.setLong(3, entity.getPostId());
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
+        return entity;
     }
 
+
     @Override
-    public Share getShareById(int id) {
+    public Share getEntityById(Long id) {
         String sql = "SELECT * FROM Share WHERE id = ?";
-        PreparedStatement statement;
+        PreparedStatement statement = null;
         Connection connection = null;
         Share share = null;
+        ResultSet resultSet = null;
         try {
             connection = ConnectionPoolDesign.getInstance().getConnection();
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
             share = resultSetToObject(resultSet);
-            resultSet.close();
-            statement.close();
         } catch (SQLException | IllegalAccessException | InstantiationException | InvocationTargetException |
                  IOException | ClassNotFoundException | NoSuchMethodException e){
-            e.printStackTrace();
+            logger.info(e);
         } finally {
             try {
-                ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
             } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
                      InstantiationException | NoSuchMethodException | IOException e) {
-                e.printStackTrace();
+                logger.info(e);
             }
         }
         return share;
     }
 
-    public Share getShareByAccountId(int id) {
+    public Share getShareByAccountId(Long id) {
         String sql = "SELECT * FROM Share WHERE account_id = ?";
-        PreparedStatement statement;
+        PreparedStatement statement = null;
         Connection connection = null;
         Share share = null;
+        ResultSet resultSet = null;
         try {
             connection = ConnectionPoolDesign.getInstance().getConnection();
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
             share = resultSetToObject(resultSet);
-            resultSet.close();
-            statement.close();
         } catch (SQLException | IllegalAccessException | InstantiationException | InvocationTargetException |
                  IOException | ClassNotFoundException | NoSuchMethodException e){
             e.printStackTrace();
         } finally {
             try {
-                ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                if (statement != null) {
+                    statement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
             } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
                      InstantiationException | NoSuchMethodException | IOException e) {
                 e.printStackTrace();
@@ -83,52 +117,106 @@ public class ShareDao extends MySQLDao<Share> implements IShareDao {
     }
 
     @Override
-    public void updateShare(Share share) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
+    public void updateEntity(Share entity) {
         String sql = "UPDATE Share SET shareCount = ?, account_id = ?, post_id = ? WHERE id = ?";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, share.getShareCount());
-        statement.setInt(2, share.getAccountId());
-        statement.setInt(3, share.getPostId());
-        statement.setInt(4, share.getId());
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
-    }
-
-    @Override
-    public void deleteShare(int id) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
-        String sql = "DELETE FROM Share WHERE id = ?";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, id);
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
-    }
-
-    @Override
-    public List<Share> getAllShares() throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
-        String sql = "SELECT * FROM Share";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        ResultSet resultSet = statement.executeQuery();
-        List<Share> shares = new ArrayList<>();
-        while (resultSet.next()){
-            Share share = new Share();
-            share.setId(resultSet.getInt("id"));
-            share.setShareCount(resultSet.getInt("shareCount"));
-            share.setAccountId(resultSet.getInt("account_id"));
-            share.setPostId(resultSet.getInt("post_id"));
-            shares.add(share);
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setLong(1, entity.getShareCount());
+            statement.setLong(2, entity.getAccountId());
+            statement.setLong(3, entity.getPostId());
+            statement.setLong(4, entity.getId());
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
         }
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
+    }
+
+    @Override
+    public void deleteEntity(Long id) {
+        String sql = "DELETE FROM Share WHERE id = ?";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
+    }
+
+
+    @Override
+    public List<Share> getAllShares() {
+        String sql = "SELECT * FROM Share";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<Share> shares = new ArrayList<>();
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                Share share = new Share();
+                share.setId(resultSet.getLong("id"));
+                share.setShareCount(resultSet.getLong("shareCount"));
+                share.setAccountId(resultSet.getLong("account_id"));
+                share.setPostId(resultSet.getLong("post_id"));
+                shares.add(share);
+            }
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
         return shares;
     }
 
-    @Override
-    public Share getEntityById(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        ShareDao shareDao = new ShareDao();
-        return shareDao.getShareById(id);
-    }
 
     @Override
     protected Share resultSetToObject(ResultSet resultSet) {
@@ -136,29 +224,15 @@ public class ShareDao extends MySQLDao<Share> implements IShareDao {
         try{
             while (resultSet.next()){
                 share = new Share();
-                share.setId(resultSet.getInt("id"));
-                share.setShareCount(resultSet.getInt("shareCount"));
-                share.setAccountId(resultSet.getInt("account_id"));
-                share.setPostId(resultSet.getInt("post_id"));
+                share.setId(resultSet.getLong("id"));
+                share.setShareCount(resultSet.getLong("shareCount"));
+                share.setAccountId(resultSet.getLong("account_id"));
+                share.setPostId(resultSet.getLong("post_id"));
             }
         } catch (SQLException e){
-            e.printStackTrace();
+            logger.info(e);
         }
         return share;
     }
 
-    @Override
-    public void updateEntity(Share entity) {
-
-    }
-
-    @Override
-    public Share createEntity(Share entity) {
-        return null;
-    }
-
-    @Override
-    public void removeEntity(int id) {
-
-    }
 }

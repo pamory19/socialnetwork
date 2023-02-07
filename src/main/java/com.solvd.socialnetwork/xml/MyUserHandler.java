@@ -27,10 +27,10 @@ public class MyUserHandler extends DefaultHandler {
         currentElement = qName;
         if (qName.equalsIgnoreCase("user")) {
             user = new User();
-            int id = Integer.parseInt(attributes.getValue("id"));
+            Long id = Long.parseLong(attributes.getValue("id"));
             user.setId(id);
         } else if (qName.equalsIgnoreCase("Account")) {
-            int id = Integer.parseInt(attributes.getValue("id"));
+            Long id = Long.parseLong(attributes.getValue("id"));
             account = new Account();
             account.setId(id);
         }
@@ -71,7 +71,7 @@ public class MyUserHandler extends DefaultHandler {
                 account.setUsername(new String(ch, start, length));
                 break;
             case "user_id":
-                account.setUser_id(Integer.parseInt(new String(ch, start, length)));
+                account.setUser_id(Long.parseLong(new String(ch, start, length)));
                 break;
         }
     }

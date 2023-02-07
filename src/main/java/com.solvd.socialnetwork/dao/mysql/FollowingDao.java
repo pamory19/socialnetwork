@@ -3,6 +3,8 @@ package com.solvd.socialnetwork.dao.mysql;
 import com.solvd.socialnetwork.dao.IFollowingDao;
 import com.solvd.socialnetwork.connectionpool.ConnectionPoolDesign;
 import com.solvd.socialnetwork.Following;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -14,37 +16,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FollowingDao extends MySQLDao<Following> implements IFollowingDao {
+    private static final Logger logger = LogManager.getLogger(FollowingDao.class);
     @Override
-    public void createFollowing(Following following) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
+    public Following createEntity(Following entity) {
         String sql = "INSERT INTO Following (follower_id, following_id) VALUES (?, ?)";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, following.getFollowerId());
-        statement.setInt(2, following.getFollowingId());
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setLong(1, entity.getFollowerId());
+            statement.setLong(2, entity.getFollowingId());
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
+        return entity;
     }
 
+
     @Override
-    public Following getFollowingById(int id) {
+    public Following getEntityById(Long id) {
         String sql = "SELECT * FROM Following WHERE id = ?";
-        PreparedStatement statement;
+        PreparedStatement statement = null;
         Connection connection = null;
         Following following = null;
         try {
             connection = ConnectionPoolDesign.getInstance().getConnection();
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
+            statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             following = resultSetToObject(resultSet);
-            resultSet.close();
-            statement.close();
         } catch (SQLException | IllegalAccessException | InstantiationException | InvocationTargetException |
                  IOException | ClassNotFoundException | NoSuchMethodException e){
             e.printStackTrace();
         } finally {
-            try{
-                ConnectionPoolDesign.getInstance().releaseConnection(connection);
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
             } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
                      InstantiationException | NoSuchMethodException | IOException e){
                 e.printStackTrace();
@@ -54,25 +80,28 @@ public class FollowingDao extends MySQLDao<Following> implements IFollowingDao {
     }
 
 
-    public Following getFollowingByAccountId(int id) {
+    public Following getFollowingByAccountId(Long id) {
         String sql = "SELECT * FROM Following WHERE account_id = ?";
-        PreparedStatement statement;
+        PreparedStatement statement = null;
         Connection connection = null;
         Following following = null;
         try{
             connection = ConnectionPoolDesign.getInstance().getConnection();
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
+            statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             following = resultSetToObject(resultSet);
-            resultSet.close();
-            statement.close();
         } catch (SQLException | IllegalAccessException | InstantiationException | InvocationTargetException |
                  IOException | ClassNotFoundException | NoSuchMethodException e){
             e.printStackTrace();
         } finally {
             try {
-                ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
             } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
                      InstantiationException | NoSuchMethodException | IOException e) {
                 e.printStackTrace();
@@ -82,50 +111,105 @@ public class FollowingDao extends MySQLDao<Following> implements IFollowingDao {
     }
 
     @Override
-    public void updateFollowing(Following following) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
+    public void updateEntity(Following entity) {
         String sql = "UPDATE Following SET follower_id = ?, following_id = ? WHERE id = ?";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, following.getFollowerId());
-        statement.setInt(2, following.getFollowingId());
-        statement.setInt(3, following.getId());
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
-    }
-
-    @Override
-    public void deleteFollowing(int id) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
-        String sql = "DELETE FROM Following WHERE id = ?";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, id);
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
-    }
-
-    @Override
-    public List<Following> getAllFollowings() throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
-        String sql = "SELECT * FROM Following";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        ResultSet resultSet = statement.executeQuery();
-        List<Following> followings = new ArrayList<>();
-        while (resultSet.next()){
-            Following following = new Following();
-            following.setId(resultSet.getInt("id"));
-            following.setFollowerId(resultSet.getInt("follower_id"));
-            following.setFollowingId(resultSet.getInt("following_id"));
-            followings.add(following);
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setLong(1, entity.getFollowerId());
+            statement.setLong(2, entity.getFollowingId());
+            statement.setLong(3, entity.getId());
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
         }
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
+    }
+
+
+    @Override
+    public void deleteEntity(Long id) {
+        String sql = "DELETE FROM Following WHERE id = ?";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
+    }
+
+
+    @Override
+    public List<Following> getAllFollowings() {
+        String sql = "SELECT * FROM Following";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<Following> followings = new ArrayList<>();
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                Following following = new Following();
+                following.setId(resultSet.getLong("id"));
+                following.setFollowerId(resultSet.getLong("follower_id"));
+                following.setFollowingId(resultSet.getLong("following_id"));
+                followings.add(following);
+            }
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
         return followings;
     }
 
-    @Override
-    public Following getEntityById(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        FollowingDao followingDao = new FollowingDao();
-        return followingDao.getFollowingById(id);
-    }
 
     @Override
     protected Following resultSetToObject(ResultSet resultSet) {
@@ -133,29 +217,15 @@ public class FollowingDao extends MySQLDao<Following> implements IFollowingDao {
         try{
             while (resultSet.next()){
                 following = new Following();
-                following.setId(resultSet.getInt("id"));
-                following.setFollowerId(resultSet.getInt("follower_id"));
-                following.setFollowingId(resultSet.getInt("following_id"));
-                following.setAccountId(resultSet.getInt("account_id"));
+                following.setId(resultSet.getLong("id"));
+                following.setFollowerId(resultSet.getLong("follower_id"));
+                following.setFollowingId(resultSet.getLong("following_id"));
+                following.setAccountId(resultSet.getLong("account_id"));
             }
         } catch (SQLException e){
-            e.printStackTrace();
+            logger.info(e);
         }
         return following;
     }
 
-    @Override
-    public void updateEntity(Following entity) {
-
-    }
-
-    @Override
-    public Following createEntity(Following entity) {
-        return null;
-    }
-
-    @Override
-    public void removeEntity(int id) {
-
-    }
 }

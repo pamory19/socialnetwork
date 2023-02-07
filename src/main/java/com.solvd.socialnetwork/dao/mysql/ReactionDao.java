@@ -3,6 +3,8 @@ package com.solvd.socialnetwork.dao.mysql;
 import com.solvd.socialnetwork.dao.IReactionDao;
 import com.solvd.socialnetwork.connectionpool.ConnectionPoolDesign;
 import com.solvd.socialnetwork.Reaction;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -15,66 +17,104 @@ import java.util.List;
 
 public class ReactionDao extends MySQLDao<Reaction> implements IReactionDao {
 
+    private static final Logger logger = LogManager.getLogger(ReactionDao.class);
+
     @Override
-    public void createReaction(Reaction reaction) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
+    public Reaction createEntity(Reaction entity) {
         String sql = "INSERT INTO Reaction (reactionType, account_id, post_id, profile_id) VALUES (?, ?, ?, ?)";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, reaction.getReactionType());
-        statement.setInt(2, reaction.getAccountId());
-        statement.setInt(3, reaction.getPostId());
-        statement.setInt(4, reaction.getProfileId());
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, entity.getReactionType());
+            statement.setLong(2, entity.getAccountId());
+            statement.setLong(3, entity.getPostId());
+            statement.setLong(4, entity.getProfileId());
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
+        return entity;
     }
 
+
     @Override
-    public Reaction getReactionById(int id) {
+    public Reaction getEntityById(Long id) {
         String sql = "SELECT * FROM Reaction WHERE id = ?";
-        PreparedStatement statement;
         Connection connection = null;
         Reaction reaction = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
         try {
             connection = ConnectionPoolDesign.getInstance().getConnection();
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
             reaction = resultSetToObject(resultSet);
-            resultSet.close();
-            statement.close();
         } catch (SQLException | IllegalAccessException | InstantiationException | InvocationTargetException |
                  IOException | ClassNotFoundException | NoSuchMethodException e){
-            e.printStackTrace();
+            logger.info(e);
         } finally {
-            try{
-                ConnectionPoolDesign.getInstance().releaseConnection(connection);
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
             } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
                      InstantiationException | NoSuchMethodException | IOException e){
-                e.printStackTrace();
+                logger.info(e);
             }
         }
         return reaction;
     }
 
-    public Reaction getReactionByAccountId(int id) {
+
+    @Override
+    public Reaction getReactionByAccountId(Long id) {
         String sql = "SELECT * FROM Reaction WHERE account_id = ?";
-        PreparedStatement statement;
+        PreparedStatement statement = null;
         Connection connection = null;
         Reaction reaction = null;
+        ResultSet resultSet = null;
         try {
             connection = ConnectionPoolDesign.getInstance().getConnection();
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
             reaction = resultSetToObject(resultSet);
-            resultSet.close();
-            statement.close();
         } catch (SQLException | IllegalAccessException | InstantiationException | InvocationTargetException |
                  IOException | ClassNotFoundException | NoSuchMethodException e){
             e.printStackTrace();
         } finally {
-            try{
-                ConnectionPoolDesign.getInstance().releaseConnection(connection);
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
             } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
                      InstantiationException | NoSuchMethodException | IOException e){
                 e.printStackTrace();
@@ -85,54 +125,105 @@ public class ReactionDao extends MySQLDao<Reaction> implements IReactionDao {
 
 
     @Override
-    public void updateReaction(Reaction reaction) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
+    public void updateEntity(Reaction entity) {
         String sql = "UPDATE Reaction SET reactionType = ?, account_id = ?, post_id = ?, profile_id = ? WHERE id = ?";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, reaction.getReactionType());
-        statement.setInt(2, reaction.getAccountId());
-        statement.setInt(3, reaction.getPostId());
-        statement.setInt(4, reaction.getProfileId());
-        statement.setInt(5, reaction.getId());
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
-    }
-
-    @Override
-    public void deleteReaction(int id) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
-        String sql = "DELETE FROM Reaction WHERE id = ?";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, id);
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
-    }
-
-    @Override
-    public List<Reaction> getAllReactions() throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
-        String sql = "SELECT * FROM Reaction";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        ResultSet resultSet = statement.executeQuery();
-        List<Reaction> reactions = new ArrayList<>();
-        while (resultSet.next()){
-            Reaction reaction = new Reaction();
-            reaction.setId(resultSet.getInt("id"));
-            reaction.setReactionType(resultSet.getString("reactionType"));
-            reaction.setAccountId(resultSet.getInt("account_id"));
-            reaction.setPostId(resultSet.getInt("post_id"));
-            reaction.setProfileId(resultSet.getInt("profile_id"));
-            reaction.setPostId(resultSet.getInt("post_id"));
-            reactions.add(reaction);
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, entity.getReactionType());
+            statement.setLong(2, entity.getAccountId());
+            statement.setLong(3, entity.getPostId());
+            statement.setLong(4, entity.getProfileId());
+            statement.setLong(5, entity.getId());
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
         }
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
-        return reactions;
     }
 
     @Override
-    public Reaction getEntityById(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        ReactionDao reactionDao = new ReactionDao();
-        return reactionDao.getReactionById(id);
+    public void deleteEntity(Long id) {
+        String sql = "DELETE FROM Reaction WHERE id = ?";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
+    }
+
+    @Override
+    public List<Reaction> getAllReactions() {
+        String sql = "SELECT * FROM Reaction";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<Reaction> reactions = new ArrayList<>();
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                Reaction reaction = new Reaction();
+                reaction.setId(resultSet.getLong("id"));
+                reaction.setReactionType(resultSet.getString("reactionType"));
+                reaction.setAccountId(resultSet.getLong("account_id"));
+                reaction.setPostId(resultSet.getLong("post_id"));
+                reaction.setProfileId(resultSet.getLong("profile_id"));
+                reactions.add(reaction);
+            }
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
+        return reactions;
     }
 
     @Override
@@ -141,30 +232,16 @@ public class ReactionDao extends MySQLDao<Reaction> implements IReactionDao {
         try{
             while (resultSet.next()) {
                 reaction = new Reaction();
-                reaction.setId(resultSet.getInt("id"));
+                reaction.setId(resultSet.getLong("id"));
                 reaction.setReactionType(resultSet.getString("reactionType"));
-                reaction.setAccountId(resultSet.getInt("account_id"));
-                reaction.setPostId(resultSet.getInt("post_id"));
-                reaction.setProfileId(resultSet.getInt("profile_id"));
+                reaction.setAccountId(resultSet.getLong("account_id"));
+                reaction.setPostId(resultSet.getLong("post_id"));
+                reaction.setProfileId(resultSet.getLong("profile_id"));
             }
         } catch (SQLException e){
-            e.printStackTrace();
+            logger.info(e);
         }
         return reaction;
     }
 
-    @Override
-    public void updateEntity(Reaction entity) {
-
-    }
-
-    @Override
-    public Reaction createEntity(Reaction entity) {
-        return null;
-    }
-
-    @Override
-    public void removeEntity(int id) {
-
-    }
 }

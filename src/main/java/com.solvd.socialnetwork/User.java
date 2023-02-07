@@ -5,23 +5,31 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @XmlRootElement(name="Users")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User extends Model {
+    @JsonProperty("firstName")
     @XmlElement(name="firstName")
     private String firstName;
+    @JsonProperty("lastName")
     @XmlElement(name="lastName")
     private String lastName;
+    @JsonProperty("age")
     @XmlElement(name="age")
     private int age;
+    @JsonProperty("email")
     @XmlElement(name="email")
     private String email;
+    @JsonProperty("phoneNumber")
     @XmlElement(name="phoneNumber")
     private String phoneNumber;
-//    @XmlElement(name="account")
+    @JsonProperty("account")
+    @XmlElement(name="account")
     private Account account;
 
-    public User(int id, String firstName, String lastName, int age, String email, String phoneNumber, Account account) {
+    public User(Long id, String firstName, String lastName, int age, String email, String phoneNumber, Account account) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;

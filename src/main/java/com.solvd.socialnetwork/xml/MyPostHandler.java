@@ -35,35 +35,35 @@ public class MyPostHandler extends DefaultHandler {
         switch (qName) {
             case "Post":
                 currentPost = new Post();
-                currentPost.setId(Integer.parseInt(attributes.getValue("id")));
+                currentPost.setId(Long.parseLong(attributes.getValue("id")));
                 break;
             case "Shares":
                 shares = new ArrayList<>();
                 break;
             case "Share":
                 currentShare = new Share();
-                currentShare.setId(Integer.parseInt(attributes.getValue("id")));
+                currentShare.setId(Long.parseLong(attributes.getValue("id")));
                 break;
             case "Comments":
                 comments = new ArrayList<>();
                 break;
             case "Comment":
                 currentComment = new Comment();
-                currentComment.setId(Integer.parseInt(attributes.getValue("id")));
+                currentComment.setId(Long.parseLong(attributes.getValue("id")));
                 break;
             case "Views":
                 views = new ArrayList<>();
                 break;
             case "View":
                 currentView = new View();
-                currentView.setId(Integer.parseInt(attributes.getValue("id")));
+                currentView.setId(Long.parseLong(attributes.getValue("id")));
                 break;
             case "Reactions":
                 reactions = new ArrayList<>();
                 break;
             case "Reaction":
                 currentReaction = new Reaction();
-                currentReaction.setId(Integer.parseInt(attributes.getValue("id")));
+                currentReaction.setId(Long.parseLong(attributes.getValue("id")));
                 break;
             default:
                 break;
@@ -86,13 +86,13 @@ public class MyPostHandler extends DefaultHandler {
 
             case "accountId":
                 if (currentShare != null) {
-                    currentShare.setAccountId(Integer.parseInt(content));
+                    currentShare.setAccountId(Long.parseLong(content));
                 } else if (currentComment != null) {
-                    currentComment.setAccountId(Integer.parseInt(content));
+                    currentComment.setAccountId(Long.parseLong(content));
                 } else if (currentView != null) {
-                    currentView.setAccountId(Integer.parseInt(content));
+                    currentView.setAccountId(Long.parseLong(content));
                 } else if (currentReaction != null) {
-                    currentReaction.setAccountId(Integer.parseInt(content));
+                    currentReaction.setAccountId(Long.parseLong(content));
                 }
                 break;
 

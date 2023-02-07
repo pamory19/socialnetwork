@@ -1,24 +1,21 @@
 package com.solvd.socialnetwork;
 
-import com.solvd.socialnetwork.Model;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.sql.Timestamp;
 
 @XmlRootElement(name="Followings")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Following extends Model {
     @XmlElement(name="followerId")
-    private int followerId;
+    private Long followerId;
     @XmlElement(name="followingId")
-    private int followingId;
+    private Long followingId;
     @XmlElement(name="accountId")
-    private int accountId;
+    private Long accountId;
 
-    public Following(int id, int followerId, int followingId, int accountId) {
+    public Following(Long id, Long followerId, Long followingId, Long accountId) {
         super(id);
         this.followerId = followerId;
         this.followingId = followingId;
@@ -30,27 +27,27 @@ public class Following extends Model {
 
     }
 
-    public int getFollowerId() {
+    public Long getFollowerId() {
         return followerId;
     }
 
-    public void setFollowerId(int followerId) {
+    public void setFollowerId(Long followerId) {
         this.followerId = followerId;
     }
 
-    public int getFollowingId() {
+    public Long getFollowingId() {
         return followingId;
     }
 
-    public void setFollowingId(int followingId) {
+    public void setFollowingId(Long followingId) {
         this.followingId = followingId;
     }
 
-    public int getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 }

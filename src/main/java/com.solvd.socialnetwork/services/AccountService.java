@@ -2,30 +2,25 @@ package com.solvd.socialnetwork.services;
 
 import com.solvd.socialnetwork.dao.IAccountDao;
 import com.solvd.socialnetwork.dao.IProfileDao;
-import com.solvd.socialnetwork.dao.IUserDao;
 import com.solvd.socialnetwork.Account;
 import com.solvd.socialnetwork.dao.mysql.AccountDao;
 import com.solvd.socialnetwork.Profile;
 import com.solvd.socialnetwork.dao.mysql.ProfileDao;
-import com.solvd.socialnetwork.dao.mysql.UserDao;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.util.List;
 
 public class AccountService {
     private IAccountDao accountDao = new AccountDao();
-    private IUserDao userDao = new UserDao();
     private IProfileDao profileDao = new ProfileDao();
+    private static final Logger logger = LogManager.getLogger(AccountService.class);
 
-    public AccountService(IAccountDao accountDao, IUserDao userDao, IProfileDao profileDao) {
+    public AccountService(IAccountDao accountDao, IProfileDao profileDao) {
         this.accountDao = accountDao;
-        this.userDao = userDao;
         this.profileDao = profileDao;
     }
 
-    public Account getAccountById(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Account getAccountById(Long id) {
         if (accountDao == null){
             return null;
         }
@@ -33,31 +28,33 @@ public class AccountService {
         return account;
     }
 
-    public List<Account> getAccounts() throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public List<Account> getAccounts() {
         return accountDao.getAllAccounts();
     }
 
-    public Profile getProfileByAccountId(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Profile getProfileByAccountId(Long id) {
         return profileDao.getProfileByAccountId(id);
     }
 
-    public void createAccount(Account account) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public void createAccount(Account account) {
         if (account.getUsername() == null || account.getPassword() == null){
-            throw new IllegalArgumentException("Username and password are required.");
+            logger.info("Username and password are required.");
         }
-        accountDao.createAccount(account);
+        else{
+            accountDao.createEntity(account);
+        }
     }
 
-    public Account getAccountByUsername(String username) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Account getAccountByUsername(String username) {
         return accountDao.getAccountByUsername(username);
     }
 
-    public void updateAccount(Account account) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        accountDao.updateAccount(account);
+    public void updateAccount(Account account) {
+        accountDao.updateEntity(account);
     }
 
-    public void deleteAccount(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        accountDao.deleteAccount(id);
+    public void deleteAccount(Long id) {
+        accountDao.deleteEntity(id);
     }
 
 }

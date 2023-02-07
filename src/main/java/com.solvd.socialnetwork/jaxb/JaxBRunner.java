@@ -20,8 +20,8 @@ public class JaxBRunner {
     public static void main(String[] args) throws JAXBException {
         // marshalling
         Account account = new Account();
-        account.setId(1);
-        account.setUser_id(1);
+        account.setId(1L);
+        account.setUser_id(1L);
         account.setPassword("jan139");
         account.setUsername("jane_comb");
 
@@ -40,10 +40,10 @@ public class JaxBRunner {
         Unmarshaller unmarshaller = context.createUnmarshaller();
 
         Share share = new Share();
-        share.setId(1);
-        share.setShareCount(5);
-        share.setAccountId(1);
-        share.setPostId(1);
+        share.setId(1L);
+        share.setShareCount(5L);
+        share.setAccountId(1L);
+        share.setPostId(1L);
 
         JAXBContext context1 = JAXBContext.newInstance(Share.class);
 
@@ -54,7 +54,7 @@ public class JaxBRunner {
         logger.info("\n");
 
         User user = new User();
-        user.setId(1);
+        user.setId(1L);
         user.setFirstName("Jane");
         user.setLastName("Comb");
         user.setAge(23);
@@ -71,11 +71,11 @@ public class JaxBRunner {
 
 
         Message message = new Message();
-        message.setId(1);
+        message.setId(1L);
         message.setText("Hey! How are you?");
-        message.setSenderId(1);
-        message.setRecipientId(2);
-        message.setAccountId(1);
+        message.setSenderId(1L);
+        message.setRecipientId(2L);
+        message.setAccountId(1L);
 
         JAXBContext context3 = JAXBContext.newInstance(Message.class);
 
@@ -88,10 +88,10 @@ public class JaxBRunner {
 
 
         Following following = new Following();
-        following.setId(1);
-        following.setFollowerId(2);
-        following.setFollowingId(1);
-        following.setAccountId(1);
+        following.setId(1L);
+        following.setFollowerId(2L);
+        following.setFollowingId(1L);
+        following.setAccountId(1L);
 
         JAXBContext context4 = JAXBContext.newInstance(Following.class);
 
@@ -102,7 +102,7 @@ public class JaxBRunner {
 
 
         // call unmarshal method from unmarshaller object
-        Account account1 = (Account) unmarshaller.unmarshal(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/AccountXML"));
+        Account account1 = (Account) unmarshaller.unmarshal(new File("/Users/parisamory/Documents/development/SocialNetwork/src/main/java/com.solvd.socialnetwork/xml/AccountXML.xml"));
         logger.info("\nID: " + account1.getId());
         logger.info("Username: " + account1.getUsername());
         logger.info("User ID: " + account1.getUser_id());

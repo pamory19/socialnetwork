@@ -7,7 +7,7 @@
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element name="caption" type="xs:string"/>
-                            <xs:element name="accountId" type="xs:int"/>
+                            <xs:element name="accountId" type="xs:Long"/>
                             <xs:element name="creationDate" type="xs:date"/>
                             <xs:element name="Shares">
                                 <xs:complexType>
@@ -15,9 +15,9 @@
                                         <xs:element name="Share" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                    <xs:element name="shareCount" type="xs:int"/>
-                                                    <xs:element name="accountId" type="xs:int"/>
-                                                    <xs:element name="postId" type="xs:int"/>
+                                                    <xs:element name="shareCount" type="xs:Long"/>
+                                                    <xs:element name="accountId" type="xs:Long"/>
+                                                    <xs:element name="postId" type="xs:Long"/>
                                                 </xs:sequence>
                                                 <xs:attribute name="id" type="xs:string" use="required"/>
                                             </xs:complexType>
@@ -32,8 +32,8 @@
                                             <xs:complexType>
                                                 <xs:sequence>
                                                     <xs:element name="text" type="xs:string"/>
-                                                    <xs:element name="accountId" type="xs:int"/>
-                                                    <xs:element name="postId" type="xs:int"/>
+                                                    <xs:element name="accountId" type="xs:Long"/>
+                                                    <xs:element name="postId" type="xs:Long"/>
                                                     <xs:element name="creationDate" type="xs:date"/>
                                                 </xs:sequence>
                                                 <xs:attribute name="id" type="xs:string" use="required"/>
@@ -48,10 +48,10 @@
                                         <xs:element name="View" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                    <xs:element name="viewCount" type="xs:int"/>
-                                                    <xs:element name="accountId" type="xs:int"/>
-                                                    <xs:element name="postId" type="xs:int"/>
-                                                    <xs:element name="profileId" type="xs:int"/>
+                                                    <xs:element name="viewCount" type="xs:Long"/>
+                                                    <xs:element name="accountId" type="xs:Long"/>
+                                                    <xs:element name="postId" type="xs:Long"/>
+                                                    <xs:element name="profileId" type="xs:Long"/>
                                                 </xs:sequence>
                                                 <xs:attribute name="id" type="xs:string" use="required"/>
                                             </xs:complexType>
@@ -66,9 +66,9 @@
                                             <xs:complexType>
                                                 <xs:sequence>
                                                     <xs:element name="reactionType" type="xs:string"/>
-                                                    <xs:element name="accountId" type="xs:int"/>
-                                                    <xs:element name="postId" type="xs:int"/>
-                                                    <xs:element name="profileId" type="xs:int"/>
+                                                    <xs:element name="accountId" type="xs:Long"/>
+                                                    <xs:element name="postId" type="xs:Long"/>
+                                                    <xs:element name="profileId" type="xs:Long"/>
                                                 </xs:sequence>
                                                 <xs:attribute name="id" type="xs:string" use="required"/>
                                             </xs:complexType>

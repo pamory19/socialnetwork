@@ -9,10 +9,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IShareDao extends IBaseDao<Share> {
-    void createShare(Share share) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException;
-    Share getShareById(int id);
-    void updateShare(Share share) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException;
-    void deleteShare(int id) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException;
-    List<Share> getAllShares() throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException;
-    Share getShareByAccountId(int id);
+    List<Share> getAllShares();
+    Share getShareByAccountId(Long id);
 }

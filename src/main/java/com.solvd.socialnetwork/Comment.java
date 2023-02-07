@@ -1,17 +1,15 @@
 package com.solvd.socialnetwork;
 
-import com.solvd.socialnetwork.Model;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 
 public class Comment extends Model {
     private String text;
-    private int accountId;
-    private int postId;
+    private Long accountId;
+    private Long postId;
 
-    public Comment(int id, Date creationDate, String text, int accountId, int postId) {
+    public Comment(Long id, Date creationDate, String text, Long accountId, Long postId) {
         super(id, creationDate);
         this.text = text;
         this.accountId = accountId;
@@ -33,19 +31,19 @@ public class Comment extends Model {
         this.text = text;
     }
 
-    public int getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 
-    public int getPostId() {
+    public Long getPostId() {
         return postId;
     }
 
-    public void setPostId(int postId) {
+    public void setPostId(Long postId) {
         this.postId = postId;
     }
 

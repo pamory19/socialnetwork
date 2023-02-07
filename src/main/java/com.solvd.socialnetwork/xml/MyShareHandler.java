@@ -25,7 +25,7 @@ public class MyShareHandler extends DefaultHandler {
                 currentShare = new Share();
                 String idString = attributes.getValue("id");
                 if (idString != null) {
-                    currentShare.setId(Integer.parseInt(idString));
+                    currentShare.setId(Long.parseLong(idString));
                 }
                 break;
             default:
@@ -43,13 +43,13 @@ public class MyShareHandler extends DefaultHandler {
                 shares.add(currentShare);
                 break;
             case "shareCount":
-                currentShare.setShareCount(Integer.parseInt(content));
+                currentShare.setShareCount(Long.parseLong(content));
                 break;
             case "accountId":
-                currentShare.setAccountId(Integer.parseInt(content));
+                currentShare.setAccountId(Long.parseLong(content));
                 break;
             case "postId":
-                currentShare.setPostId(Integer.parseInt(content));
+                currentShare.setPostId(Long.parseLong(content));
                 break;
             default:
                 break;

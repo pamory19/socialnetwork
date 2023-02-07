@@ -8,7 +8,7 @@
                         <xs:sequence>
                             <xs:element name="firstname" type="xs:string"/>
                             <xs:element name="lastname" type="xs:string"/>
-                            <xs:element name="age" type="xs:int"/>
+                            <xs:element name="age" type="xs:Long"/>
                             <xs:element name="email" type="xs:string"/>
                             <xs:element name="phoneNumber" type="xs:string"/>
                             <xs:element name="Account" maxOccurs="unbounded">

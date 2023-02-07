@@ -3,6 +3,8 @@ package com.solvd.socialnetwork.dao.mysql;
 import com.solvd.socialnetwork.Comment;
 import com.solvd.socialnetwork.dao.ICommentDao;
 import com.solvd.socialnetwork.connectionpool.ConnectionPoolDesign;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -12,83 +14,139 @@ import java.util.List;
 
 public class CommentDao extends MySQLDao<Comment> implements ICommentDao {
 
+    private static final Logger logger = LogManager.getLogger(CommentDao.class);
+
     @Override
-    public void createComment(Comment comment) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
+    public Comment createEntity(Comment entity) {
         String sql = "INSERT INTO Comment (text, creationDate, account_id, post_id) VALUES (?, ?, ?, ?)";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, comment.getText());
-        statement.setDate(2, comment.getCreationDate());
-        statement.setInt(3, comment.getAccountId());
-        statement.setInt(4, comment.getPostId());
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, entity.getText());
+            statement.setDate(2, entity.getCreationDate());
+            statement.setLong(3, entity.getAccountId());
+            statement.setLong(4, entity.getPostId());
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
+        return entity;
     }
 
+
     @Override
-    public void updateComment(Comment comment) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
+    public void updateEntity(Comment entity) {
         String sql = "UPDATE Comment SET text = ?, creationDate = ?, account_id = ?, post_id = ? WHERE id = ?";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, comment.getText());
-        statement.setDate(2, comment.getCreationDate());
-        statement.setInt(3, comment.getAccountId());
-        statement.setInt(4, comment.getPostId());
-        statement.setInt(5, comment.getId());
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, entity.getText());
+            statement.setDate(2, entity.getCreationDate());
+            statement.setLong(3, entity.getAccountId());
+            statement.setLong(4, entity.getPostId());
+            statement.setLong(5, entity.getId());
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
     }
 
+
     @Override
-    public Comment getCommentById(int id) {
+    public Comment getEntityById(Long id) {
         String sql = "SELECT * FROM Comment WHERE id = ?";
-        PreparedStatement statement;
+        PreparedStatement statement = null;
         Connection connection = null;
         Comment comment = null;
+        ResultSet resultSet = null;
         try{
             connection = ConnectionPoolDesign.getInstance().getConnection();
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
             comment = resultSetToObject(resultSet);
-            resultSet.close();
-            statement.close();
         } catch (SQLException | IllegalAccessException | InstantiationException | InvocationTargetException |
                  IOException | ClassNotFoundException | NoSuchMethodException e){
-            e.printStackTrace();
+            logger.info(e);
         } finally {
-            try{
-                ConnectionPoolDesign.getInstance().releaseConnection(connection);
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
             } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
                      InstantiationException | NoSuchMethodException | IOException e){
-                e.printStackTrace();
+                logger.info(e);
             }
         }
         return comment;
     }
 
-    public Comment getCommentByAccountId(int id) {
+    @Override
+    public Comment getCommentByAccountId(Long id) {
         String sql = "SELECT * FROM Comment WHERE account_id = ?";
-        PreparedStatement statement;
+        PreparedStatement statement = null;
         Connection connection = null;
         Comment comment = null;
+        ResultSet resultSet = null;
         try{
             connection = ConnectionPoolDesign.getInstance().getConnection();
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
             comment = resultSetToObject(resultSet);
-            resultSet.close();
-            statement.close();
         } catch (SQLException | IllegalAccessException | InstantiationException | InvocationTargetException |
                  IOException | ClassNotFoundException | NoSuchMethodException e){
-            e.printStackTrace();
+            logger.info(e);
         } finally {
-            try{
-                ConnectionPoolDesign.getInstance().releaseConnection(connection);
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
             } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
                      InstantiationException | NoSuchMethodException | IOException e){
-                e.printStackTrace();
+                logger.info(e);
             }
         }
         return comment;
@@ -96,39 +154,73 @@ public class CommentDao extends MySQLDao<Comment> implements ICommentDao {
 
 
     @Override
-    public List<Comment> getAllComments() throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
+    public List<Comment> getAllComments() {
         String sql = "SELECT * FROM Comment";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        ResultSet resultSet = statement.executeQuery();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
         List<Comment> comments = new ArrayList<>();
-        while (resultSet.next()){
-            Comment comment = new Comment();
-            comment.setId(resultSet.getInt("id"));
-            comment.setText(resultSet.getString("text"));
-            comment.setCreationDate(resultSet.getDate("creationDate"));
-            comment.setAccountId(resultSet.getInt("account_id"));
-            comment.setPostId(resultSet.getInt("post_id"));
-            comments.add(comment);
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                Comment comment = new Comment();
+                comment.setId(resultSet.getLong("id"));
+                comment.setText(resultSet.getString("text"));
+                comment.setCreationDate(resultSet.getDate("creationDate"));
+                comment.setAccountId(resultSet.getLong("account_id"));
+                comment.setPostId(resultSet.getLong("post_id"));
+                comments.add(comment);
+            }
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
         }
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
         return comments;
     }
 
     @Override
-    public void deleteComment(int id) throws SQLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, IOException {
+    public void deleteEntity(Long id) {
         String sql = "DELETE FROM Comment WHERE id = ?";
-        Connection connection = ConnectionPoolDesign.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, id);
-        statement.executeUpdate();
-        ConnectionPoolDesign.getInstance().releaseConnection(connection);
-    }
-
-    @Override
-    public Comment getEntityById(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        CommentDao commentDao = new CommentDao();
-        return commentDao.getCommentById(id);
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPoolDesign.getInstance().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchMethodException | IOException e) {
+            logger.info(e);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolDesign.getInstance().releaseConnection(connection);
+                }
+            } catch (SQLException | ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     InstantiationException | NoSuchMethodException | IOException e) {
+                logger.info(e);
+            }
+        }
     }
 
     @Override
@@ -139,27 +231,13 @@ public class CommentDao extends MySQLDao<Comment> implements ICommentDao {
                 comment = new Comment();
                 comment.setText(resultSet.getString("text"));
                 comment.setCreationDate(resultSet.getDate("creationDate"));
-                comment.setAccountId(resultSet.getInt("account_id"));
-                comment.setPostId(resultSet.getInt("post_id"));
+                comment.setAccountId(resultSet.getLong("account_id"));
+                comment.setPostId(resultSet.getLong("post_id"));
             }
-            } catch (SQLException ex) {
-            throw new RuntimeException(ex);
+            } catch (SQLException e) {
+            logger.info(e);
         }
         return comment;
     }
 
-    @Override
-    public void updateEntity(Comment entity) {
-
-    }
-
-    @Override
-    public Comment createEntity(Comment entity) {
-        return null;
-    }
-
-    @Override
-    public void removeEntity(int id) {
-
-    }
 }

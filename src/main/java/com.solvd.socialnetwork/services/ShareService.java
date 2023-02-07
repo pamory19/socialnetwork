@@ -3,6 +3,8 @@ package com.solvd.socialnetwork.services;
 import com.solvd.socialnetwork.dao.IShareDao;
 import com.solvd.socialnetwork.Share;
 import com.solvd.socialnetwork.dao.mysql.ShareDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -12,33 +14,32 @@ import java.util.Optional;
 
 public class ShareService {
     private IShareDao shareDao = new ShareDao();
+    private static final Logger logger = LogManager.getLogger(ShareService.class);
 
     public ShareService(IShareDao shareDao) {
         this.shareDao = shareDao;
     }
 
-    public void createShare(Share share) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<Integer> postId = Optional.ofNullable(share.getPostId());
-        Optional<Integer> accountId = Optional.ofNullable(share.getAccountId());
-        if (postId.isPresent() && accountId.isPresent()){
-            shareDao.createShare(share);
+    public void createShare(Share share) {
+        if (share.getPostId() == null && share.getAccountId() == null){
+            logger.info("Post and account ID are required.");
         }
         else{
-            throw new IllegalArgumentException("Post and account ID are required.");
+            shareDao.createEntity(share);
         }
     }
 
-    public void updateShare(Share share) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<Integer> shareId = Optional.ofNullable(share.getId());
+    public void updateShare(Share share) {
+        Optional<Long> shareId = Optional.ofNullable(share.getId());
         if (shareId.isPresent()){
-            shareDao.updateShare(share);
+            shareDao.updateEntity(share);
         }
         else{
-            throw new IllegalArgumentException("Share ID is required.");
+            logger.info("Share ID is required.");
         }
     }
 
-    public Share getShareById(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Share getShareById(Long id) {
         if (shareDao == null){
             return null;
         }
@@ -47,16 +48,16 @@ public class ShareService {
         return share;
     }
 
-    public Share getShareByAccountId(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Share getShareByAccountId(Long id) {
         return shareDao.getShareByAccountId(id);
     }
 
-    public List<Share> getAllShares() throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public List<Share> getAllShares() {
         return shareDao.getAllShares();
     }
 
-    public void deleteShare(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        shareDao.deleteShare(id);
+    public void deleteShare(Long id) {
+        shareDao.deleteEntity(id);
     }
 
 }

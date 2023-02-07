@@ -3,6 +3,8 @@ package com.solvd.socialnetwork.services;
 import com.solvd.socialnetwork.dao.IReactionDao;
 import com.solvd.socialnetwork.Reaction;
 import com.solvd.socialnetwork.dao.mysql.ReactionDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -12,32 +14,33 @@ import java.util.Optional;
 
 public class ReactionService {
     private IReactionDao reactionDao = new ReactionDao();
+    private static final Logger logger = LogManager.getLogger(ReactionService.class);
 
     public ReactionService(IReactionDao reactionDao) {
         this.reactionDao = reactionDao;
     }
 
-    public void createReaction(Reaction reaction) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<Integer> accountId = Optional.ofNullable(reaction.getAccountId());
+    public void createReaction(Reaction reaction) {
+        Optional<Long> accountId = Optional.ofNullable(reaction.getAccountId());
         if (accountId.isPresent()){
-            reactionDao.createReaction(reaction);
+            reactionDao.createEntity(reaction);
         }
         else{
-            throw new IllegalArgumentException("Account ID is required.");
+            logger.info("Account ID is required.");
         }
     }
 
-    public void updateReaction(Reaction reaction) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Optional<Integer> reactionId = Optional.ofNullable(reaction.getId());
+    public void updateReaction(Reaction reaction) {
+        Optional<Long> reactionId = Optional.ofNullable(reaction.getId());
         if (reactionId.isPresent()){
-            reactionDao.updateReaction(reaction);
+            reactionDao.updateEntity(reaction);
         }
         else{
-            throw new IllegalArgumentException("Reaction ID is required.");
+            logger.info("Reaction ID is required.");
         }
     }
 
-    public Reaction getReactionById(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Reaction getReactionById(Long id) {
         if (reactionDao == null){
             return null;
         }
@@ -46,15 +49,15 @@ public class ReactionService {
         return reaction;
     }
 
-    public Reaction getReactionByAccountId(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public Reaction getReactionByAccountId(Long id) {
         return reactionDao.getReactionByAccountId(id);
     }
 
-    public List<Reaction> getAllReactions() throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public List<Reaction> getAllReactions() {
         return reactionDao.getAllReactions();
     }
 
-    public void deleteReaction(int id) throws SQLException, IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-        reactionDao.deleteReaction(id);
+    public void deleteReaction(Long id) {
+        reactionDao.deleteEntity(id);
     }
 }
