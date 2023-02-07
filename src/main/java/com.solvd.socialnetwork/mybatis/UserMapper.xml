@@ -16,13 +16,13 @@
   </select>
 
   <insert id="insert" parameterType="com.solvd.socialnetwork.models.User" useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO users (first_name, last_name, email, password)
-    VALUES (#{firstName}, #{lastName}, #{email}, #{password})
+    INSERT INTO users (firstName, lastName, age, email, phoneNum)
+    VALUES (#{firstName}, #{lastName}, #{age}, #{email}, #{phoneNum})
   </insert>
 
   <update id="update" parameterType="com.solvd.socialnetwork.models.User">
     UPDATE users
-    SET first_name = #{firstName}, last_name = #{lastName}, email = #{email}
+    SET firstName = #{firstName}, lastName = #{lastName}, age = #{age}, email = #{email}, phoneNum = #{phoneNum}
     WHERE id = #{id}
   </update>
 
